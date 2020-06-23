@@ -81,12 +81,17 @@ class PrimeMetadataFactoryTest extends TestCase
     public function test_getAllMetadata_with_locator()
     {
         $this->factory = new PrimeMetadataFactory(Prime::service(), new ClassFileLocator(__DIR__.'/../_files'));
-        $all = $this->factory->getAllMetadata();
 
-        $this->assertEqualsCanonicalizing([
-            $this->factory->getMetadataFor(AssocEntity::class),
-            $this->factory->getMetadataFor(TestEntity::class),
-            $this->factory->getMetadataFor(OtherEntity::class),
+        $all = [];
+
+        foreach ($this->factory->getAllMetadata() as $metadata) {
+            $all[$metadata->getName()] = $metadata;
+        }
+
+        $this->assertEquals([
+            TestEntity::class => $this->factory->getMetadataFor(TestEntity::class),
+            AssocEntity::class => $this->factory->getMetadataFor(AssocEntity::class),
+            OtherEntity::class => $this->factory->getMetadataFor(OtherEntity::class),
         ], $all);
     }
 }
