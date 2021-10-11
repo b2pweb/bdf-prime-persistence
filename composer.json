@@ -15,7 +15,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.1",
-        "b2pweb/bdf-prime": "~1.1",
+        "b2pweb/bdf-prime": "~1.1|~2.0",
         "doctrine/persistence": "^1.0|^2.0"
     },
     "require-dev": {
@@ -33,7 +33,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "1.0-dev"
         }
     }
 }
