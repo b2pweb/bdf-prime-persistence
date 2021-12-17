@@ -6,7 +6,7 @@ use Bdf\Prime\Mapper\Mapper;
 
 class TestEntityMapper extends Mapper
 {
-    public function schema()
+    public function schema(): array
     {
         return [
             'connection' => 'test',
@@ -14,14 +14,14 @@ class TestEntityMapper extends Mapper
         ];
     }
 
-    public function buildFields($builder)
+    public function buildFields($builder): void
     {
         $builder
             ->integer('id')->autoincrement()
             ->string('value');
     }
 
-    public function buildRelations($builder)
+    public function buildRelations($builder): void
     {
         $builder->on('assoc')->belongsTo(AssocEntity::class . '::value', 'value');
         $builder->on('detached')->belongsTo(AssocEntity::class . '::value', 'value')->detached();

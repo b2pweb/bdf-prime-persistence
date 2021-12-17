@@ -134,7 +134,13 @@ final class EntityMetadata implements ClassMetadata
      */
     public function getAssociationNames()
     {
-        return array_keys(iterator_to_array($this->mapper->relations()));
+        $relations = $this->mapper->relations();
+
+        if (!is_array($relations)) {
+            $relations = iterator_to_array($relations);
+        }
+
+        return array_keys($relations);
     }
 
     /**

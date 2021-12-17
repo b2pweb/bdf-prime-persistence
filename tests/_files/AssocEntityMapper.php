@@ -7,7 +7,7 @@ use Bdf\Prime\Persistence\TestEntity;
 
 class AssocEntityMapper extends Mapper
 {
-    public function schema()
+    public function schema(): array
     {
         return [
             'connection' => 'test',
@@ -15,12 +15,12 @@ class AssocEntityMapper extends Mapper
         ];
     }
 
-    public function buildFields($builder)
+    public function buildFields($builder): void
     {
         $builder->string('value')->primary();
     }
 
-    public function buildRelations($builder)
+    public function buildRelations($builder): void
     {
         $builder->on('entities')->hasMany(TestEntity::class.'::value', 'value')->detached();
     }
