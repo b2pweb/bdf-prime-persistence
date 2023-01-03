@@ -1,4 +1,9 @@
 build:
+  environment:
+    timezone: FR
+    php:
+      version: 7.4
+
   nodes:
     analysis:
       tests:
@@ -6,11 +11,6 @@ build:
           - php-scrutinizer-run
 
     tests:
-      environment:
-        timezone: FR
-        php:
-          version: 7.4
-
       tests:
         override:
           - command: composer run tests-with-coverage
