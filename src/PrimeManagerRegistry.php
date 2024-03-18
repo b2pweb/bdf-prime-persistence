@@ -4,6 +4,8 @@ namespace Bdf\Prime\Persistence;
 
 use Bdf\Prime\ServiceLocator;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * Adapt prime service locator to doctrine manager registry
@@ -32,15 +34,15 @@ class PrimeManagerRegistry implements ManagerRegistry
     /**
      * {@inheritdoc}
      */
-    public function getDefaultConnectionName()
+    public function getDefaultConnectionName(): string
     {
-        return $this->serviceLocator->connections()->getDefaultConnection();
+        return (string) $this->serviceLocator->connections()->getDefaultConnection();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getConnection($name = null)
+    public function getConnection($name = null): object
     {
         return $this->serviceLocator->connections()->getConnection($name);
     }
@@ -48,7 +50,7 @@ class PrimeManagerRegistry implements ManagerRegistry
     /**
      * {@inheritdoc}
      */
-    public function getConnections()
+    public function getConnections(): array
     {
         return $this->serviceLocator->connections()->connections();
     }
@@ -56,7 +58,7 @@ class PrimeManagerRegistry implements ManagerRegistry
     /**
      * {@inheritdoc}
      */
-    public function getConnectionNames()
+    public function getConnectionNames(): array
     {
         return $this->serviceLocator->connections()->getConnectionNames();
     }
@@ -64,7 +66,7 @@ class PrimeManagerRegistry implements ManagerRegistry
     /**
      * {@inheritdoc}
      */
-    public function getDefaultManagerName()
+    public function getDefaultManagerName(): string
     {
         return 'prime';
     }
@@ -72,7 +74,7 @@ class PrimeManagerRegistry implements ManagerRegistry
     /**
      * {@inheritdoc}
      */
-    public function getManager($name = null)
+    public function getManager($name = null): ObjectManager
     {
         if (!$this->manager) {
             $this->manager = new PrimeObjectManager($this->serviceLocator);
@@ -84,7 +86,7 @@ class PrimeManagerRegistry implements ManagerRegistry
     /**
      * {@inheritdoc}
      */
-    public function getManagers()
+    public function getManagers(): array
     {
         return [$this->getManager()];
     }
@@ -92,9 +94,11 @@ class PrimeManagerRegistry implements ManagerRegistry
     /**
      * {@inheritdoc}
      */
-    public function resetManager($name = null)
+    public function resetManager($name = null): ObjectManager
     {
         $this->manager = null;
+
+        return $this->getManager($name);
     }
 
     /**
@@ -108,7 +112,7 @@ class PrimeManagerRegistry implements ManagerRegistry
     /**
      * {@inheritdoc}
      */
-    public function getManagerNames()
+    public function getManagerNames(): array
     {
         return ['prime'];
     }
@@ -116,7 +120,7 @@ class PrimeManagerRegistry implements ManagerRegistry
     /**
      * {@inheritdoc}
      */
-    public function getRepository($persistentObject, $persistentManagerName = null)
+    public function getRepository($persistentObject, $persistentManagerName = null): ObjectRepository
     {
         return $this->getManager()->getRepository($persistentObject);
     }
@@ -124,7 +128,7 @@ class PrimeManagerRegistry implements ManagerRegistry
     /**
      * {@inheritdoc}
      */
-    public function getManagerForClass($class)
+    public function getManagerForClass($class): ?ObjectManager
     {
         return $this->getManager();
     }

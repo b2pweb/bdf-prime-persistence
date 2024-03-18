@@ -4,6 +4,7 @@ namespace Bdf\Prime\Persistence\Mapping;
 
 use Bdf\Prime\ServiceLocator;
 use Bdf\Util\File\ClassFileLocator;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\Mapping\ClassMetadataFactory;
 
 /**
@@ -37,7 +38,7 @@ final class PrimeMetadataFactory implements ClassMetadataFactory
     /**
      * {@inheritdoc}
      */
-    public function getAllMetadata()
+    public function getAllMetadata(): array
     {
         if ($this->classFileLocator === null) {
             return array_map([$this, 'getMetadataFor'], $this->serviceLocator->repositoryNames());
@@ -59,7 +60,7 @@ final class PrimeMetadataFactory implements ClassMetadataFactory
     /**
      * {@inheritdoc}
      */
-    public function getMetadataFor($className)
+    public function getMetadataFor($className): ClassMetadata
     {
         return new EntityMetadata($this->serviceLocator->repository($className)->mapper());
     }
@@ -67,7 +68,7 @@ final class PrimeMetadataFactory implements ClassMetadataFactory
     /**
      * {@inheritdoc}
      */
-    public function hasMetadataFor($className)
+    public function hasMetadataFor($className): bool
     {
         return $this->serviceLocator->repository($className) !== null;
     }
@@ -75,7 +76,7 @@ final class PrimeMetadataFactory implements ClassMetadataFactory
     /**
      * {@inheritdoc}
      */
-    public function setMetadataFor($className, $class)
+    public function setMetadataFor($className, $class): void
     {
         throw new \BadMethodCallException('Cannot set metadata');
     }
@@ -83,7 +84,7 @@ final class PrimeMetadataFactory implements ClassMetadataFactory
     /**
      * {@inheritdoc}
      */
-    public function isTransient($className)
+    public function isTransient($className): bool
     {
         return $this->hasMetadataFor($className);
     }

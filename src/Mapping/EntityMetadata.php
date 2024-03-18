@@ -42,7 +42,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->mapper->getEntityClass();
     }
@@ -50,7 +50,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): array
     {
         return $this->metadata->primary();
     }
@@ -58,7 +58,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function getReflectionClass()
+    public function getReflectionClass(): ReflectionClass
     {
         if (!$this->reflectionClass) {
             return $this->reflectionClass = new ReflectionClass($this->mapper->getEntityClass());
@@ -70,7 +70,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function isIdentifier($fieldName)
+    public function isIdentifier($fieldName): bool
     {
         return $this->metadata->isPrimary($fieldName);
     }
@@ -78,7 +78,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function hasField($fieldName)
+    public function hasField($fieldName): bool
     {
         return $this->metadata->attributeExists($fieldName) || isset($this->metadata->embeddeds[$fieldName]);
     }
@@ -86,7 +86,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function hasAssociation($fieldName)
+    public function hasAssociation($fieldName): bool
     {
         return isset($this->mapper->relations()[$fieldName]);
     }
@@ -94,7 +94,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function isSingleValuedAssociation($fieldName)
+    public function isSingleValuedAssociation($fieldName): bool
     {
         return in_array(
             $this->mapper->relation($fieldName)['type'],
@@ -105,7 +105,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function isCollectionValuedAssociation($fieldName)
+    public function isCollectionValuedAssociation($fieldName): bool
     {
         return in_array(
             $this->mapper->relation($fieldName)['type'],
@@ -116,7 +116,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function getFieldNames()
+    public function getFieldNames(): array
     {
         return array_keys($this->metadata->attributes);
     }
@@ -124,7 +124,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierFieldNames()
+    public function getIdentifierFieldNames(): array
     {
         return $this->getIdentifier();
     }
@@ -132,7 +132,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function getAssociationNames()
+    public function getAssociationNames(): array
     {
         $relations = $this->mapper->relations();
 
@@ -146,7 +146,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function getTypeOfField($fieldName)
+    public function getTypeOfField($fieldName): ?string
     {
         return $this->metadata->attributeType($fieldName);
     }
@@ -154,15 +154,15 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function getAssociationTargetClass($assocName)
+    public function getAssociationTargetClass($assocName): ?string
     {
-        return $this->mapper->relation($assocName)['entity'];
+        return $this->mapper->relation($assocName)['entity'] ?? null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isAssociationInverseSide($assocName)
+    public function isAssociationInverseSide($assocName): bool
     {
         return false;
     }
@@ -170,7 +170,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function getAssociationMappedByTargetField($assocName)
+    public function getAssociationMappedByTargetField($assocName): string
     {
         return $this->mapper->relation($assocName)['localKey'];
     }
@@ -178,7 +178,7 @@ final class EntityMetadata implements ClassMetadata
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierValues($object)
+    public function getIdentifierValues($object): array
     {
         // @todo filter empty values ?
         return $this->mapper->primaryCriteria($object);

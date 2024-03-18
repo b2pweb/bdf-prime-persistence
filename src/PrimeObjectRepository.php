@@ -36,7 +36,7 @@ final class PrimeObjectRepository implements ObjectRepository
     /**
      * {@inheritdoc}
      */
-    public function find($id)
+    public function find($id): ?object
     {
         // @todo find from cached entity ?
         return $this->repository->queries()->findById($id);
@@ -45,7 +45,7 @@ final class PrimeObjectRepository implements ObjectRepository
     /**
      * {@inheritdoc}
      */
-    public function findAll()
+    public function findAll(): array
     {
         return $this->repository->queries()->keyValue()->all();
     }
@@ -53,7 +53,7 @@ final class PrimeObjectRepository implements ObjectRepository
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null)
+    public function findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null): array
     {
         $query = $this->repository->queries()->builder()->where($criteria);
 
@@ -75,7 +75,7 @@ final class PrimeObjectRepository implements ObjectRepository
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria)
+    public function findOneBy(array $criteria): ?object
     {
         return $this->repository->queries()->builder()->where($criteria)->first();
     }
@@ -83,7 +83,7 @@ final class PrimeObjectRepository implements ObjectRepository
     /**
      * {@inheritdoc}
      */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->repository->entityClass();
     }

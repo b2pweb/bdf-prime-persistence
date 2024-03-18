@@ -5,7 +5,10 @@ namespace Bdf\Prime\Persistence;
 use Bdf\Prime\Persistence\Mapping\EntityMetadata;
 use Bdf\Prime\Persistence\Mapping\PrimeMetadataFactory;
 use Bdf\Prime\ServiceLocator;
+use Doctrine\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadataFactory;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * Adapt prime service locator to doctrine object manager
@@ -40,7 +43,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function find($className, $id)
+    public function find($className, $id): ?object
     {
         return $this->getRepository($className)->find($id);
     }
@@ -48,7 +51,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function persist($object)
+    public function persist($object): void
     {
         $this->getRepository(get_class($object))->getPersister()->add($object);
     }
@@ -56,7 +59,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function remove($object)
+    public function remove($object): void
     {
         $this->getRepository(get_class($object))->getPersister()->remove($object);
     }
@@ -72,7 +75,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function clear($objectName = null)
+    public function clear($objectName = null): void
     {
         if ($objectName === null) {
             foreach ($this->repositories as $repository) {
@@ -86,7 +89,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function detach($object)
+    public function detach($object): void
     {
         $this->getRepository(get_class($object))->getPersister()->detach($object);
     }
@@ -94,7 +97,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function refresh($object)
+    public function refresh($object): void
     {
         throw new \BadMethodCallException('Unsupported operation');
     }
@@ -102,7 +105,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function flush()
+    public function flush(): void
     {
         foreach ($this->repositories as $repository) {
             $repository->getPersister()->flush();
@@ -112,7 +115,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function getRepository($className)
+    public function getRepository($className): ?ObjectRepository
     {
         if (isset($this->repositories[$className])) {
             return $this->repositories[$className];
@@ -124,7 +127,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function getClassMetadata($className)
+    public function getClassMetadata($className): ClassMetadata
     {
         return $this->getMetadataFactory()->getMetadataFor($className);
     }
@@ -132,7 +135,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function getMetadataFactory()
+    public function getMetadataFactory(): ClassMetadataFactory
     {
         if ($this->metadataFactory) {
             return $this->metadataFactory;
@@ -144,7 +147,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function initializeObject($obj)
+    public function initializeObject($obj): void
     {
         throw new \BadMethodCallException('Unsupported operation');
     }
@@ -152,7 +155,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function contains($object)
+    public function contains($object): bool
     {
         $className = get_class($object);
         return isset($this->repositories[$className]) && $this->repositories[$className]->getPersister()->contains($object);
