@@ -115,7 +115,7 @@ final class PrimeObjectManager implements ObjectManager
     /**
      * {@inheritdoc}
      */
-    public function getRepository($className): ?ObjectRepository
+    public function getRepository($className): ObjectRepository
     {
         if (isset($this->repositories[$className])) {
             return $this->repositories[$className];
@@ -150,6 +150,14 @@ final class PrimeObjectManager implements ObjectManager
     public function initializeObject($obj): void
     {
         throw new \BadMethodCallException('Unsupported operation');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isUninitializedObject($value): bool
+    {
+        return true;
     }
 
     /**
